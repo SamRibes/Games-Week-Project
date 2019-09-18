@@ -3,7 +3,7 @@
 ## Player control
 
     As a Player, I want to move my character around the screen using the 'WASD' keys.
-    As a Player I want to aim where my character shoots their bullets, using the cursor.
+    As a Player, I want to aim where my character shoots their bullets, using the cursor.
     As a Player, I want to control how my character shoots by left-clicking when I want them to shoot or by holding down left click to shoot continuously.
 
 ## Enemy behaviour

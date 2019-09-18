@@ -12,10 +12,29 @@ namespace Zombie_Attack
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        public static Texture2D PlayerTexture { get; private set; }
+
+        public static ZombieGame Instance { get; private set; }
+        public static Viewport Viewport
+        {
+            get
+            {
+                return Instance.GraphicsDevice.Viewport;
+            }
+        }
+        public static Vector2 ScreenSize
+        {
+            get
+            {
+                return new Vector2(Viewport.Width, Viewport.Height);
+            }
+        }
+
         public ZombieGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            Instance = this;
         }
 
         /// <summary>
@@ -26,9 +45,9 @@ namespace Zombie_Attack
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
+            EntityManager.Add(Player.Instance);
+            base.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -41,6 +60,7 @@ namespace Zombie_Attack
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            PlayerTexture = Content.Load<Texture2D>("Player/PlayerPlaceholder");
         }
 
         /// <summary>
@@ -59,10 +79,12 @@ namespace Zombie_Attack
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
                 Exit();
-
-            // TODO: Add your update logic here
+            }
+            Input.Update();
+            EntityManager.Update();
 
             base.Update(gameTime);
         }
@@ -73,9 +95,11 @@ namespace Zombie_Attack
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
-            // TODO: Add your drawing code here
+            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
+            EntityManager.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
