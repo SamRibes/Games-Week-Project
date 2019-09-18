@@ -1,6 +1,6 @@
-Top down 2-d shooter
+Top down 2-D shooter
 
-	Player moves around screen using 'wasd'  
+	Player moves around screen using 'wasd'
 		Aims bullets with mouse
 		Shoots on click
 			Can hold mouse to continuously shoot
@@ -8,18 +8,15 @@ Top down 2-d shooter
 	Enemies spawn from 4 points around the edge of an arena
 		North, South, East, West
 		Enemies will move towards the player and kill the player when they touch
-		Different kinds of enemies
-			Faster moving enemies with less health
-			Slower moving enemies but with more health
-			Ranged enemies who will try to stay at a distance
-			Regular enemies who will simply walk to the player at a 'normal' speed with a 'normal' amount of health
 
 	Game is done in rounds
 		Each round lasts 60 seconds
 
-	Two players would be done by having two player entities on screen with no friendly fire.
-		One player mode and two player mode
-			Options are selected on main menu
+	High Scores
+		Each enemy is worth an amount of points
+		Score is totaled and displayed as game goes on
+		When the player runs out of lives the game ends and their high score is stored somewhere (e.g. txt, csv, json)
+		Name for score is asked for at game over screen 
 
 
 	EXTRA
@@ -34,3 +31,13 @@ Top down 2-d shooter
 		3 boss types
 			Boss randomly chosen
 		Boss types will have different fighting styles
+
+	Different kinds of enemies
+			Faster moving enemies with less health
+			Slower moving enemies but with more health
+			Ranged enemies who will try to stay at a distance
+			Regular enemies who will simply walk to the player at a 'normal' speed with a 'normal' amount of health
+
+	Two players would be done by having two player entities on screen with no friendly fire.
+		One player mode and two player mode
+			Options are selected on main menu
