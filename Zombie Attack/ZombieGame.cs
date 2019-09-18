@@ -13,6 +13,7 @@ namespace Zombie_Attack
         SpriteBatch spriteBatch;
 
         public static Texture2D PlayerTexture { get; private set; }
+        public static Texture2D BulletTexture { get; private set; }
 
         public static ZombieGame Instance { get; private set; }
         public static Viewport Viewport
@@ -47,6 +48,7 @@ namespace Zombie_Attack
         {
             base.Initialize();
             EntityManager.Add(Player.Instance);
+
             base.IsMouseVisible = true;
         }
 
@@ -61,6 +63,7 @@ namespace Zombie_Attack
 
             // TODO: use this.Content to load your game content here
             PlayerTexture = Content.Load<Texture2D>("Player/PlayerPlaceholder");
+            BulletTexture = Content.Load<Texture2D>("Bullets/BulletPlaceHolder");
         }
 
         /// <summary>

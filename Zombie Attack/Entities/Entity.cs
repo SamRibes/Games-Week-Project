@@ -45,7 +45,7 @@ namespace Zombie_Attack
         //Called when drawing the entity to the canvas
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(image, Position, null, colour, Orientation, Size/2f, 1f, 0, 0);
+            spriteBatch.Draw(image, Position, null, colour, Orientation, Size / 2f, 1f, 0, 0);
         }
 
     }
