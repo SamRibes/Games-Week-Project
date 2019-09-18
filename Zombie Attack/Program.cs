@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Games_Week_Project
+namespace Zombie_Attack
 {
 #if WINDOWS || LINUX
     /// <summary>
@@ -14,7 +14,7 @@ namespace Games_Week_Project
         [STAThread]
         static void Main()
         {
-            using (var game = new Game1())
+            using (var game = new ZombieGame())
                 game.Run();
         }
     }

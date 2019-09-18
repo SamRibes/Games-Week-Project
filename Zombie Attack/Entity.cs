@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Games_Week_Project
+namespace Zombie_Attack
 {
     abstract class Entity
     {
         protected Texture2D image;
-        protected Color colour;
+        protected Color colour = Color.White;
         public Vector2 Position, Velocity;
         public float Orientation;
         public float Radius = 20;
@@ -23,7 +23,7 @@ namespace Games_Week_Project
             {
                 if (image == null)
                 {
-                    return Vector2.Zero;
+                    return new Vector2(0, 0);
                 }
                 else
                 {
@@ -34,6 +34,10 @@ namespace Games_Week_Project
 
         public abstract void Update();
 
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(image, Position, null, colour, Orientation, Size/2f, 1f, 0, 0);
+        }
 
     }
 }

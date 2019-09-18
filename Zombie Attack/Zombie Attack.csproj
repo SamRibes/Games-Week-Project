@@ -6,11 +6,11 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9351511D-0211-4DCC-B33B-051A83E0486B}</ProjectGuid>
+    <ProjectGuid>{06D9BBFE-03D4-40D3-B376-6BD62896FDDD}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Games_Week_Project</RootNamespace>
-    <AssemblyName>Games-Week-Project</AssemblyName>
+    <RootNamespace>Zombie_Attack</RootNamespace>
+    <AssemblyName>Zombie Attack</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>Windows</MonoGamePlatform>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -42,7 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Entity.cs" />
-    <Compile Include="GameRoot.cs" />
+    <Compile Include="EntityManager.cs" />
+    <Compile Include="ZombieGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

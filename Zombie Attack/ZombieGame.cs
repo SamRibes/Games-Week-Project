@@ -2,17 +2,17 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Games_Week_Project
+namespace Zombie_Attack
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class GameRoot : Game
+    public class ZombieGame : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public GameRoot()
+        public ZombieGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
