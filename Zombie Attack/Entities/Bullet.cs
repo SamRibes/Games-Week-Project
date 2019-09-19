@@ -31,5 +31,9 @@ namespace Zombie_Attack
                 IsExpired = true;
             }
         }
+        public void WasDestroyed()
+        {
+            IsExpired = true;
+        }
     }
 }

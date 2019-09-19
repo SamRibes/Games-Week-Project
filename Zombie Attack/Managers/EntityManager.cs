@@ -31,6 +31,14 @@ namespace Zombie_Attack
             }
         }
 
+        public static int EnemyCount
+        {
+            get
+            {
+                return enemies.Count;
+            }
+        }
+
         //Used to add an entity to the entities List
         public static void Add(Entity entity)
         {
@@ -62,8 +70,50 @@ namespace Zombie_Attack
         private static bool IsColliding(Entity a, Entity b)
         {
             float radius = a.Radius + b.Radius;
-            return !a.IsExpired && !b.IsExpired 
+            return !a.IsExpired && !b.IsExpired
                 && Vector2.DistanceSquared(a.Position, b.Position) < radius * radius;
+        }
+
+        static void HandleCollisions()
+        {
+            //Handle collision between enemies
+            for (int i = 0; i < EnemyCount; i++)
+            {
+                for (int j = i + 1; j < EnemyCount; j++)
+                {
+                    if (IsColliding(enemies[i], enemies[j]))
+                    {
+                        enemies[i].HandleCollision(enemies[j]);
+                        enemies[j].HandleCollision(enemies[i]);
+                    }
+                }
+            }
+
+            //Handle collision between enemies and bullets
+            for (int i = 0; i < EnemyCount; i++)
+            {
+                for (int j = 0; j < bullets.Count; j++)
+                {
+                    if (IsColliding(enemies[i], bullets[j]))
+                    {
+                        enemies[i].WasShot();
+                        bullets[j].IsExpired = true;
+                    }
+                }
+            }
+
+            //Handle collision between enemies and player
+            for (int i = 0; i < EnemyCount; i++)
+            {
+                if (IsColliding(Player.Instance, enemies[i]))
+                {
+                    Player.Instance.Kill();
+                    enemies.ForEach(e => e.WasShot());
+                    bullets.ForEach(e => e.WasDestroyed());
+                    break;
+                }
+            }
+
         }
 
         //used to loop through the entities list and make each of them update their properties
@@ -71,8 +121,9 @@ namespace Zombie_Attack
         public static void Update()
         {
             isUpdating = true;
+            HandleCollisions();
 
-            foreach(var entity in entities)
+            foreach (var entity in entities)
             {
                 entity.Update();
             }
@@ -95,13 +146,13 @@ namespace Zombie_Attack
         //Called to draw all of the entities to the canvas
         public static void Draw(SpriteBatch spriteBatch)
         {
-            foreach(var entity in entities)
+            foreach (var entity in entities)
             {
                 entity.Draw(spriteBatch);
             }
         }
 
-        
+
 
     }
 }

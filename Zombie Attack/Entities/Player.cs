@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,14 @@ namespace Zombie_Attack
         private static Player instance;
         const int cooldownFrames = 30;
         int cooldownLeft = 0;
+        int framesTillRespawn = 0;
+        public bool IsDead
+        {
+            get
+            {
+                return framesTillRespawn > 0;
+            }
+        }
 
         public static Player Instance
         {
@@ -36,6 +45,12 @@ namespace Zombie_Attack
 
         public override void Update()
         {
+            if (IsDead)
+            {
+                framesTillRespawn--;
+                return;
+            }
+
             const float speed = 3;
             var aim = Input.GetAimDirection();
             Velocity = speed * Input.GetMovementDirection();
@@ -65,14 +80,20 @@ namespace Zombie_Attack
             {
                 cooldownLeft = 1;
             }
-
             
+        }
 
-            if (Input.WasKeyPressed(Keys.P))
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            if(!IsDead)
             {
-                EntityManager.Add(Enemy.CreateZombie(ZombieGame.ScreenSize/2));
+                base.Draw(spriteBatch);
             }
-            
+        }
+
+        public void Kill()
+        {
+            framesTillRespawn = 120;
         }
     }
 }

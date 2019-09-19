@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Threading.Tasks;
 
 namespace Zombie_Attack
 {
@@ -30,12 +32,15 @@ namespace Zombie_Attack
                 return new Vector2(Viewport.Width, Viewport.Height);
             }
         }
+        public static SpriteFont Font { get; private set; }
+        public static int GameTimeInSeconds, LastGameTimeInSeconds;
+        public static int CurrentStage { get; set; }
 
         public ZombieGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             Instance = this;
@@ -51,6 +56,8 @@ namespace Zombie_Attack
         {
             base.Initialize();
             EntityManager.Add(Player.Instance);
+            LastGameTimeInSeconds = 0;
+            CurrentStage = 1;
 
             base.IsMouseVisible = true;
         }
@@ -68,6 +75,7 @@ namespace Zombie_Attack
             PlayerTexture = Content.Load<Texture2D>("Player/PlayerPlaceHolder");
             BulletTexture = Content.Load<Texture2D>("Bullets/BulletPlaceHolder");
             EnemyTexture = Content.Load<Texture2D>("Enemies/EnemyPlaceholder");
+            Font = Content.Load<SpriteFont>("Fonts/Font");
         }
 
         /// <summary>
@@ -86,12 +94,16 @@ namespace Zombie_Attack
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            GameTimeInSeconds = (int)gameTime.TotalGameTime.TotalSeconds;
+
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Exit();
             }
             Input.Update();
             EntityManager.Update();
+            EnemySpawner.Update();
+            
 
             base.Update(gameTime);
         }
@@ -105,6 +117,8 @@ namespace Zombie_Attack
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
+
+            spriteBatch.DrawString(Font, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40), Color.White);
             EntityManager.Draw(spriteBatch);
             spriteBatch.End();
 

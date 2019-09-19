@@ -37,6 +37,13 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/EnemyPlaceholder.png
 
+#begin Fonts/Font.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/Font.spritefont
+
 #begin Player/LilSoldier.png
 /importer:TextureImporter
 /processor:TextureProcessor
