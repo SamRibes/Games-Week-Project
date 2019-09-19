@@ -104,7 +104,6 @@ namespace Zombie_Attack
             EntityManager.Update();
             EnemySpawner.Update();
             
-
             base.Update(gameTime);
         }
 
@@ -119,6 +118,7 @@ namespace Zombie_Attack
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
 
             spriteBatch.DrawString(Font, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40), Color.White);
+
             EntityManager.Draw(spriteBatch);
             spriteBatch.End();
 
