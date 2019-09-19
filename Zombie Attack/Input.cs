@@ -35,6 +35,18 @@ namespace Zombie_Attack
             return lastKeyboardState.IsKeyUp(key) && keyboardState.IsKeyDown(key);
         }
 
+        public static bool WasLeftMouseClicked()
+        {
+            if ((mouseState.LeftButton == ButtonState.Pressed))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static Vector2 GetMovementDirection()
         {
             Vector2 direction = new Vector2(0, 0);

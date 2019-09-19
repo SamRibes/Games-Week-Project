@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,28 +36,43 @@ namespace Zombie_Attack
 
         public override void Update()
         {
-            const float speed = 8;
-
+            const float speed = 3;
+            var aim = Input.GetAimDirection();
             Velocity = speed * Input.GetMovementDirection();
 
             Position += Velocity;
             Position = Vector2.Clamp(Position, Size/2, ZombieGame.ScreenSize - Size/2);
-
-            if (Velocity.LengthSquared() > 0)
-            {
-                Orientation = Velocity.ToAngle();
-            }
-
-            var aim = Input.GetAimDirection();
-            if (cooldownLeft <= 0)
-            {
-                cooldownLeft = cooldownFrames;
-                EntityManager.Add(new Bullet(Position, aim));
-            }
-            if (cooldownLeft > 0)
+            
+            Orientation = aim.ToAngle();
+           
+            
+            if (Input.WasLeftMouseClicked() == true)
             {
                 cooldownLeft--;
             }
+
+            if (cooldownLeft <= 0)
+            {
+                cooldownLeft = cooldownFrames;
+                EntityManager.Add(new Bullet(Position, aim*5));
+                if (cooldownLeft > 0)
+                {
+                    cooldownLeft--;
+                }
+            }
+
+            if(Input.WasLeftMouseClicked() == false)
+            {
+                cooldownLeft = 1;
+            }
+
+            
+
+            if (Input.WasKeyPressed(Keys.P))
+            {
+                EntityManager.Add(new Enemy(ZombieGame.EnemyTexture, ZombieGame.ScreenSize / 2));
+            }
+            
         }
     }
 }

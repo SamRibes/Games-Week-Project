@@ -14,7 +14,7 @@ namespace Zombie_Attack
 
         public static Texture2D PlayerTexture { get; private set; }
         public static Texture2D BulletTexture { get; private set; }
-
+        public static Texture2D EnemyTexture { get; private set; }
         public static ZombieGame Instance { get; private set; }
         public static Viewport Viewport
         {
@@ -35,6 +35,9 @@ namespace Zombie_Attack
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             Instance = this;
         }
 
@@ -62,8 +65,9 @@ namespace Zombie_Attack
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            PlayerTexture = Content.Load<Texture2D>("Player/PlayerPlaceholder");
+            PlayerTexture = Content.Load<Texture2D>("Player/PlayerPlaceHolder");
             BulletTexture = Content.Load<Texture2D>("Bullets/BulletPlaceHolder");
+            EnemyTexture = Content.Load<Texture2D>("Enemies/EnemyPlaceholder");
         }
 
         /// <summary>
