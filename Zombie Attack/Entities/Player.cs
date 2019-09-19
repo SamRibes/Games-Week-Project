@@ -70,7 +70,7 @@ namespace Zombie_Attack
 
             if (Input.WasKeyPressed(Keys.P))
             {
-                EntityManager.Add(new Enemy(ZombieGame.EnemyTexture, ZombieGame.ScreenSize / 2));
+                EntityManager.Add(Enemy.CreateZombie(ZombieGame.ScreenSize/2));
             }
             
         }
