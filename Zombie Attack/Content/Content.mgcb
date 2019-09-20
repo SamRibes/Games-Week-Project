@@ -37,24 +37,19 @@
 /processorParam:TextureFormat=Color
 /build:Enemies/EnemyPlaceholder.png
 
+#begin Fonts/BigStringFont.spritefont
+/importer:FontDescriptionImporter
+/processor:LocalizedFontProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/BigStringFont.spritefont
+
 #begin Fonts/Font.spritefont
 /importer:FontDescriptionImporter
 /processor:LocalizedFontProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Font.spritefont
-
-#begin Player/LilSoldier.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Player/LilSoldier.png
 
 #begin Player/PlayerPlaceholder.png
 /importer:TextureImporter

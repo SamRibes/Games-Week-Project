@@ -33,8 +33,13 @@ namespace Zombie_Attack
             }
         }
         public static SpriteFont Font { get; private set; }
+        public SpriteFont BigFont { get; private set; }
+
         public static int GameTimeInSeconds, LastGameTimeInSeconds;
         public static int CurrentStage { get; set; }
+        public static bool StageChange{ get; set; }
+        private int stageChangeCountDown = 0;
+
 
         public ZombieGame()
         {
@@ -76,6 +81,7 @@ namespace Zombie_Attack
             BulletTexture = Content.Load<Texture2D>("Bullets/BulletPlaceHolder");
             EnemyTexture = Content.Load<Texture2D>("Enemies/EnemyPlaceholder");
             Font = Content.Load<SpriteFont>("Fonts/Font");
+            BigFont = Content.Load<SpriteFont>("Fonts/BigStringFont");
         }
 
         /// <summary>
@@ -116,10 +122,28 @@ namespace Zombie_Attack
             GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
+            if (StageChange == true)
+            {
+                stageChangeCountDown = 120;
+                StageChange = false;
+            }
 
-            spriteBatch.DrawString(Font, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40), Color.White);
+            if (stageChangeCountDown > 0)
+            {
+                spriteBatch.DrawString(BigFont, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
+                stageChangeCountDown--;
+            }
+            else
+            {
+                spriteBatch.DrawString(Font, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40), Color.White);
+                spriteBatch.DrawString(Font, $"Score: {Player.Instance.Score}", new Vector2(ScreenSize.X / 40, (ScreenSize.Y / 40)*3), Color.White);
+                spriteBatch.DrawString(Font, $"Next wave in: {EnemySpawner.NextWaveIn}", new Vector2(ScreenSize.X / 40, (ScreenSize.Y / 40)*5), Color.White);
+                spriteBatch.DrawString(Font, $"Enemies left: {EnemySpawner.EnemiesLeft}", new Vector2((ScreenSize.X / 40)*35, ScreenSize.Y / 40), Color.White);
 
-            EntityManager.Draw(spriteBatch);
+                EntityManager.Draw(spriteBatch);
+            }
+
+            
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -22,6 +22,7 @@ namespace Zombie_Attack
                 return framesTillRespawn > 0;
             }
         }
+        public int Score;
 
         public static Player Instance
         {
@@ -51,7 +52,7 @@ namespace Zombie_Attack
                 return;
             }
 
-            const float speed = 3;
+            const float speed = 8;
             var aim = Input.GetAimDirection();
             Velocity = speed * Input.GetMovementDirection();
 
@@ -69,7 +70,7 @@ namespace Zombie_Attack
             if (cooldownLeft <= 0)
             {
                 cooldownLeft = cooldownFrames;
-                EntityManager.Add(new Bullet(Position, aim*5));
+                EntityManager.Add(new Bullet(Position, aim*15));
                 if (cooldownLeft > 0)
                 {
                     cooldownLeft--;

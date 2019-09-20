@@ -11,12 +11,14 @@ namespace Zombie_Attack
     class Enemy : Entity
     {
         private List<IEnumerator<int>> behaviours = new List<IEnumerator<int>>();
+        private int hitPoints;
 
-        public Enemy(Texture2D image, Vector2 position)
+        public Enemy(Texture2D image, Vector2 position, int hitPoints)
         {
             this.image = image;
             Position = position;
             Radius = image.Width / 2f;
+            this.hitPoints = hitPoints;
         }
 
         public override void Update()
@@ -31,7 +33,7 @@ namespace Zombie_Attack
 
         public static Enemy CreateZombie(Vector2 position)
         {
-            var enemy = new Enemy(ZombieGame.EnemyTexture, position);
+            var enemy = new Enemy(ZombieGame.EnemyTexture, position, 2);
             enemy.AddBehaviour(enemy.FollowPlayer());
 
             return enemy;
@@ -39,7 +41,12 @@ namespace Zombie_Attack
 
         public void WasShot()
         {
-            IsExpired = true;
+            hitPoints--;
+            if (hitPoints == 0)
+            {
+                IsExpired = true;
+                Player.Instance.Score += 50;
+            }
         }
 
         public void HandleCollision(Enemy other)
@@ -66,7 +73,7 @@ namespace Zombie_Attack
 
         #region EnemyTypes
 
-        IEnumerable<int> FollowPlayer(float acceleration = 0.5f)
+        IEnumerable<int> FollowPlayer(float acceleration = 1f)
         {
             while (true)
             {
