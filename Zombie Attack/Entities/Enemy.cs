@@ -12,6 +12,9 @@ namespace Zombie_Attack
     {
         private List<IEnumerator<int>> behaviours = new List<IEnumerator<int>>();
         private int hitPoints;
+        private int cooldownFrames = 120;
+        private int cooldownRemaining = 0;
+        private static Random rand = new Random();
 
         public Enemy(Texture2D image, Vector2 position, int hitPoints)
         {
@@ -31,10 +34,34 @@ namespace Zombie_Attack
             ApplyBehaviours();
         }
 
-        public static Enemy CreateZombie(Vector2 position)
+        public static Enemy CreateBasicZombie(Vector2 position)
         {
-            var enemy = new Enemy(ZombieGame.EnemyTexture, position, 2);
-            enemy.AddBehaviour(enemy.FollowPlayer());
+            var enemy = new Enemy(ZombieGame.BasicZombieTexture, position, 2);
+            enemy.AddBehaviour(enemy.BasicZombie());
+
+            return enemy;
+        }
+
+        public static Enemy CreateFastZombie(Vector2 position)
+        {
+            var enemy = new Enemy(ZombieGame.FastZombieTexture, position, 1);
+            enemy.AddBehaviour(enemy.FastZombie());
+
+            return enemy;
+        }
+
+        public static Enemy CreateTankZombie(Vector2 position)
+        {
+            var enemy = new Enemy(ZombieGame.TankZombieTexture, position, 3);
+            enemy.AddBehaviour(enemy.TankZombie());
+
+            return enemy;
+        }
+
+        public static Enemy CreateRangedZombie(Vector2 position)
+        {
+            var enemy = new Enemy(ZombieGame.RangedZombieTexture, position, 1);
+            enemy.AddBehaviour(enemy.RangedZombie());
 
             return enemy;
         }
@@ -48,11 +75,22 @@ namespace Zombie_Attack
                 Player.Instance.Score += 50;
             }
         }
+        public void WasDestroyed()
+        {
+            IsExpired = true;
+        }
 
         public void HandleCollision(Enemy other)
         {
             var d = Position - other.Position;
-            Velocity += 10 * d / (d.LengthSquared());
+            if (Position == other.Position)
+            {
+                Position.X = Position.X + 10;
+            }
+            else
+            {
+                Velocity += 10 * d / (d.LengthSquared() + 1);
+            }
         }
 
         private void AddBehaviour(IEnumerable<int> behaviour)
@@ -64,7 +102,7 @@ namespace Zombie_Attack
         {
             for (int i = 0; i < behaviours.Count; i++)
             {
-                if(!behaviours[i].MoveNext())
+                if (!behaviours[i].MoveNext())
                 {
                     behaviours.RemoveAt(i--);
                 }
@@ -73,16 +111,71 @@ namespace Zombie_Attack
 
         #region EnemyTypes
 
-        IEnumerable<int> FollowPlayer(float acceleration = 1f)
+        IEnumerable<int> BasicZombie(float acceleration = 0.8f)
         {
             while (true)
             {
                 Velocity += (Player.Instance.Position - Position).ScaleTo(acceleration);
 
-                if(Velocity != Vector2.Zero)
+                if (Velocity != Vector2.Zero)
                 {
                     Orientation = Velocity.ToAngle();
                 }
+
+                yield return 0;
+            }
+        }
+
+        IEnumerable<int> FastZombie(float acceleration = 2f)
+        {
+            while (true)
+            {
+                Velocity += (Player.Instance.Position - Position).ScaleTo(acceleration);
+
+                if (Velocity != Vector2.Zero)
+                {
+                    Orientation = Velocity.ToAngle();
+                }
+
+                yield return 0;
+            }
+        }
+
+        IEnumerable<int> TankZombie(float acceleration = 0.5f)
+        {
+            while (true)
+            {
+                Velocity += (Player.Instance.Position - Position).ScaleTo(acceleration);
+
+                if (Velocity != Vector2.Zero)
+                {
+                    Orientation = Velocity.ToAngle();
+                }
+
+                yield return 0;
+            }
+        }
+
+        IEnumerable<int> RangedZombie(float acceleration = 0.2f)
+        {
+            while (true)
+            {
+                var bulletVelocity = 0.4f;
+                var aim = (Player.Instance.Position - Position);
+                Velocity += aim.ScaleTo(acceleration);
+
+                Orientation = Player.Instance.Position.ToAngle();
+
+                if (cooldownRemaining <= 0)
+                {
+                    cooldownRemaining = cooldownFrames;
+                    float aimAngle = aim.ToAngle();
+
+                    EntityManager.Add(new EnemyBullet(Position, aim.ScaleTo(bulletVelocity)));
+                }
+
+                if (cooldownRemaining > 0)
+                    cooldownRemaining--;
 
                 yield return 0;
             }

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ namespace Zombie_Attack
             const float speed = 8;
             var aim = Input.GetAimDirection();
             Velocity = speed * Input.GetMovementDirection();
-
+            
             Position += Velocity;
             Position = Vector2.Clamp(Position, Size/2, ZombieGame.ScreenSize - Size/2);
             
@@ -95,6 +96,8 @@ namespace Zombie_Attack
         public void Kill()
         {
             framesTillRespawn = 120;
+            File.AppendAllText("scores.txt", (Instance.Score.ToString() + "\n"));
+            Instance.Score = 0;
         }
     }
 }

@@ -10,12 +10,15 @@ namespace Zombie_Attack
 {
     static class EntityManager
     {
+        public static bool PauseEnemies { get; set; }
         //List of all entities
         static List<Entity> entities = new List<Entity>();
 
         static List<Enemy> enemies = new List<Enemy>();
 
         static List<Bullet> bullets = new List<Bullet>();
+
+        static List<EnemyBullet> enemyBullets = new List<EnemyBullet>();
 
         //Checked when looping through entities
         static bool isUpdating;
@@ -64,6 +67,10 @@ namespace Zombie_Attack
             {
                 enemies.Add(entity as Enemy);
             }
+            else if (entity is EnemyBullet)
+            {
+                enemyBullets.Add(entity as EnemyBullet);
+            }
         }
 
         //Check that the distance between two entities is lesss than their radii combined (checking the distance squared against the radii squared is faster than not squaring)
@@ -108,8 +115,22 @@ namespace Zombie_Attack
                 if (IsColliding(Player.Instance, enemies[i]))
                 {
                     Player.Instance.Kill();
-                    enemies.ForEach(e => e.WasShot());
+                    enemies.ForEach(e => e.WasDestroyed());
                     bullets.ForEach(e => e.WasDestroyed());
+                    enemyBullets.ForEach(e => e.WasDestroyed());
+                    break;
+                }
+            }
+
+            //Handle collision between enemy bullets and player
+            for (int i = 0; i < enemyBullets.Count; i++)
+            {
+                if (IsColliding(Player.Instance, enemyBullets[i]))
+                {
+                    Player.Instance.Kill();
+                    enemies.ForEach(e => e.WasDestroyed());
+                    bullets.ForEach(e => e.WasDestroyed());
+                    enemyBullets.ForEach(e => e.WasDestroyed());
                     break;
                 }
             }
@@ -120,26 +141,29 @@ namespace Zombie_Attack
         //Also cleans up any destroyed entities
         public static void Update()
         {
-            isUpdating = true;
-            HandleCollisions();
-
-            foreach (var entity in entities)
+            if (!PauseEnemies)
             {
-                entity.Update();
+                isUpdating = true;
+                HandleCollisions();
+
+                foreach (var entity in entities)
+                {
+                    entity.Update();
+                }
+
+                isUpdating = false;
+
+                foreach (var entity in addedEntities)
+                {
+                    AddEntity(entity);
+                }
+
+                addedEntities.Clear();
+
+                entities = entities.Where(e => !e.IsExpired).ToList();
+                bullets = bullets.Where(b => !b.IsExpired).ToList();
+                enemies = enemies.Where(e => !e.IsExpired).ToList();
             }
-
-            isUpdating = false;
-
-            foreach (var entity in addedEntities)
-            {
-                AddEntity(entity);
-            }
-
-            addedEntities.Clear();
-
-            entities = entities.Where(e => !e.IsExpired).ToList();
-            bullets = bullets.Where(b => !b.IsExpired).ToList();
-            enemies = enemies.Where(e => !e.IsExpired).ToList();
 
         }
 
@@ -150,6 +174,8 @@ namespace Zombie_Attack
             {
                 entity.Draw(spriteBatch);
             }
+            
+
         }
 
 

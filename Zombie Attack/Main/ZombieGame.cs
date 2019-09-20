@@ -16,7 +16,11 @@ namespace Zombie_Attack
 
         public static Texture2D PlayerTexture { get; private set; }
         public static Texture2D BulletTexture { get; private set; }
-        public static Texture2D EnemyTexture { get; private set; }
+        public static Texture2D BasicZombieTexture { get; private set; }
+        public static Texture2D FastZombieTexture { get; private set; }
+        public static Texture2D TankZombieTexture { get; private set; }
+        public static Texture2D RangedZombieTexture { get; private set; }
+        public Texture2D GroundTexture { get; private set; }
         public static ZombieGame Instance { get; private set; }
         public static Viewport Viewport
         {
@@ -38,6 +42,7 @@ namespace Zombie_Attack
         public static int GameTimeInSeconds, LastGameTimeInSeconds;
         public static int CurrentStage { get; set; }
         public static bool StageChange{ get; set; }
+
         private int stageChangeCountDown = 0;
 
 
@@ -46,8 +51,8 @@ namespace Zombie_Attack
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferWidth = 1200;
+            graphics.PreferredBackBufferHeight = 1200;
             Instance = this;
         }
 
@@ -77,9 +82,13 @@ namespace Zombie_Attack
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            PlayerTexture = Content.Load<Texture2D>("Player/PlayerPlaceHolder");
-            BulletTexture = Content.Load<Texture2D>("Bullets/BulletPlaceHolder");
-            EnemyTexture = Content.Load<Texture2D>("Enemies/EnemyPlaceholder");
+            PlayerTexture = Content.Load<Texture2D>("Player/Player");
+            BulletTexture = Content.Load<Texture2D>("Bullets/Bullet");
+            BasicZombieTexture = Content.Load<Texture2D>("Enemies/BasicZombie");
+            FastZombieTexture = Content.Load<Texture2D>("Enemies/FastZombie");
+            TankZombieTexture = Content.Load<Texture2D>("Enemies/TankZombie");
+            RangedZombieTexture = Content.Load<Texture2D>("Enemies/RangedZombie");
+            GroundTexture = Content.Load<Texture2D>("Backgrounds/GroundTexture");
             Font = Content.Load<SpriteFont>("Fonts/Font");
             BigFont = Content.Load<SpriteFont>("Fonts/BigStringFont");
         }
@@ -121,20 +130,32 @@ namespace Zombie_Attack
         {
             GraphicsDevice.Clear(Color.Black);
 
-            spriteBatch.Begin(SpriteSortMode.Texture, BlendState.Additive);
+            spriteBatch.Begin(SpriteSortMode.Deferred);
+
+            spriteBatch.Draw(GroundTexture, Vector2.Zero, Color.White);
+
             if (StageChange == true)
             {
                 stageChangeCountDown = 120;
+                CurrentStage++;
+                if (Player.Instance.IsDead) { CurrentStage--; }
                 StageChange = false;
             }
 
-            if (stageChangeCountDown > 0)
+            if(Player.Instance.IsDead)
+            {
+                spriteBatch.DrawString(BigFont, $"GAME OVER. You got to round {CurrentStage}.", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
+            }
+
+            else if (stageChangeCountDown > 0)
             {
                 spriteBatch.DrawString(BigFont, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
+                EntityManager.PauseEnemies = true;
                 stageChangeCountDown--;
             }
             else
             {
+                EntityManager.PauseEnemies = false;
                 spriteBatch.DrawString(Font, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40), Color.White);
                 spriteBatch.DrawString(Font, $"Score: {Player.Instance.Score}", new Vector2(ScreenSize.X / 40, (ScreenSize.Y / 40)*3), Color.White);
                 spriteBatch.DrawString(Font, $"Next wave in: {EnemySpawner.NextWaveIn}", new Vector2(ScreenSize.X / 40, (ScreenSize.Y / 40)*5), Color.White);
