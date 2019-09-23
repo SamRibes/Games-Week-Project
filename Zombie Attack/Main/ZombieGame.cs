@@ -24,6 +24,7 @@ namespace Zombie_Attack
         public static Texture2D TankZombieTexture { get; private set; }
         public static Texture2D RangedZombieTexture { get; private set; }
         public Texture2D GroundTexture { get; private set; }
+        public Texture2D ButtonTexture { get; private set; }
         public static ZombieGame Instance { get; private set; }
         public static Viewport Viewport
         {
@@ -85,9 +86,15 @@ namespace Zombie_Attack
         protected override void Initialize()
         {
             base.Initialize();
-            ButtonManager.Add(BulletTexture);
+            ButtonManager.Add(ButtonTexture);
+            ButtonManager.Add(ButtonTexture);
+            ButtonManager.Add(ButtonTexture);
+            ButtonManager.Add(ButtonTexture);
+
             _state = GameState.MainMenu;
+
             EntityManager.Add(Player.Instance);
+
             LastGameTimeInSeconds = 0;
             CurrentStage = 1;
 
@@ -105,13 +112,14 @@ namespace Zombie_Attack
 
             // TODO: use this.Content to load your game content here
             PlayerTexture = Content.Load<Texture2D>("Player/Player");
-            BulletTexture = Content.Load<Texture2D>("Bullets/Bullet");
+            BulletTexture = Content.Load<Texture2D>("Bullets/PlayerBullet");
             EnemySpitTexture = Content.Load<Texture2D>("Bullets/EnemySpit");
             BasicZombieTexture = Content.Load<Texture2D>("Enemies/BasicZombie");
             FastZombieTexture = Content.Load<Texture2D>("Enemies/FastZombie");
             TankZombieTexture = Content.Load<Texture2D>("Enemies/TankZombie");
             RangedZombieTexture = Content.Load<Texture2D>("Enemies/RangedZombie");
             GroundTexture = Content.Load<Texture2D>("Backgrounds/GroundTexture");
+            ButtonTexture = Content.Load<Texture2D>("Buttons/StartButton");
             Font = Content.Load<SpriteFont>("Fonts/Font");
             BigFont = Content.Load<SpriteFont>("Fonts/BigStringFont");
         }
@@ -142,8 +150,8 @@ namespace Zombie_Attack
             switch (_state)
             {
                 case GameState.MainMenu:
-                    ButtonManager.Add();
-                    // UpdateMainMenu(gameTime);
+                    Input.Update();
+                    ButtonManager.Update();
                     break;
                 case GameState.MainGame:
                     Input.Update();
@@ -158,7 +166,6 @@ namespace Zombie_Attack
                     //UpdateEndOfGame(gameTime);
                     break;
             }
-
             base.Update(gameTime);
         }
 
@@ -168,40 +175,57 @@ namespace Zombie_Attack
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin(SpriteSortMode.Deferred);
 
-            spriteBatch.Draw(GroundTexture, Vector2.Zero, Color.White);
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    ButtonManager.Draw(spriteBatch);
+                    break;
 
-            if (StageChange == true)
-            {
-                stageChangeCountDown = 120;
-                CurrentStage++;
-                if (Player.Instance.IsDead) { CurrentStage--; }
-                StageChange = false;
-            }
+                case GameState.MainGame:
+                    spriteBatch.Draw(GroundTexture, Vector2.Zero, Color.White);
 
-            if (Player.Instance.IsDead)
-            {
-                spriteBatch.DrawString(BigFont, $"GAME OVER. You got to round {CurrentStage}.", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
-            }
-            else if (stageChangeCountDown > 0)
-            {
-                spriteBatch.DrawString(BigFont, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
-                EntityManager.PauseEnemies = true;
-                stageChangeCountDown--;
-            }
-            else
-            {
-                EntityManager.PauseEnemies = false;
-                spriteBatch.DrawString(Font, $"Stage {CurrentStage}", TopLeftOfScreen, Color.White);
-                spriteBatch.DrawString(Font, $"Score: {Player.Instance.Score}", TopLeftOfScreen * 3, Color.White);
-                spriteBatch.DrawString(Font, $"Next wave in: {EnemySpawner.NextWaveIn}", TopLeftOfScreen * 5, Color.White);
-                spriteBatch.DrawString(Font, $"Enemies left: {EnemySpawner.EnemiesLeft}", new Vector2((ScreenSize.X / 40) * 35, ScreenSize.Y / 40), Color.White);
+                    if (StageChange == true)
+                    {
+                        stageChangeCountDown = 120;
+                        CurrentStage++;
+                        if (Player.Instance.IsDead) { CurrentStage--; }
+                        StageChange = false;
+                    }
 
-                EntityManager.Draw(spriteBatch);
+                    if (Player.Instance.IsDead)
+                    {
+                        spriteBatch.DrawString(BigFont, $"GAME OVER. You got to round {CurrentStage}.", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
+                    }
+                    else if (stageChangeCountDown > 0)
+                    {
+                        spriteBatch.DrawString(BigFont, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
+                        EntityManager.PauseEnemies = true;
+                        stageChangeCountDown--;
+                    }
+                    else
+                    {
+                        EntityManager.PauseEnemies = false;
+                        spriteBatch.DrawString(Font, $"Stage {CurrentStage}", TopLeftOfScreen, Color.White);
+                        spriteBatch.DrawString(Font, $"Score: {Player.Instance.Score}", TopLeftOfScreen * 3, Color.White);
+                        spriteBatch.DrawString(Font, $"Next wave in: {EnemySpawner.NextWaveIn}", TopLeftOfScreen * 5, Color.White);
+                        spriteBatch.DrawString(Font, $"Enemies left: {EnemySpawner.EnemiesLeft}", new Vector2((ScreenSize.X / 40) * 35, ScreenSize.Y / 40), Color.White);
+
+                        EntityManager.Draw(spriteBatch);
+                    }
+                    break;
+
+                case GameState.GameComplete:
+                    break;
+                case GameState.GameOver:
+                    break;
+                default:
+                    break;
             }
+            
 
             spriteBatch.End();
 

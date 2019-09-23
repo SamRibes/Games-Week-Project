@@ -49,6 +49,18 @@
 /processorParam:TextureFormat=Color
 /build:Bullets/EnemyBullet.png
 
+#begin Bullets/EnemySpit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Bullets/EnemySpit.png
+
 #begin Bullets/PlayerBullet.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -61,7 +73,7 @@
 /processorParam:TextureFormat=Color
 /build:Bullets/PlayerBullet.png
 
-#begin Bullets/EnemySpit.png
+#begin Buttons/StartButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -71,7 +83,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Bullets/EnemySpit.png
+/build:Buttons/StartButton.png
 
 #begin Enemies/BasicZombie.png
 /importer:TextureImporter

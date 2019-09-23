@@ -17,16 +17,21 @@ namespace Zombie_Attack
         public Button(Texture2D texture)
         {
             this.texture = texture;
-            this.x = 0;
+            this.height = 100;
+            this.width = 200;
+            this.x = (ZombieGame.Viewport.Width / 2) - (width / 2);
             this.YPosition = 0;
-            this.height = 0;
-            this.width = 0;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle(x, YPosition, width, height), Color.White); 
         }
-        
+
+        public void Update()
+        {
+           
+        }
+
     }
 }

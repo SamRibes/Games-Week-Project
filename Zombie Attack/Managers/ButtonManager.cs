@@ -16,18 +16,26 @@ namespace Zombie_Attack
 
         public static void Add(Texture2D texture)
         {
-            menuList.Add(new Button((centerX-((centerX / 5)/2)), centerY, centerX / 5, centerY / 10, texture));
+            menuList.Add(new Button(texture));
             int gap = 10;
-            int buttonHeight = 50 + gap;
-            int totalHeight = buttonHeight * menuList.Count;
+            int buttonHeight = 100;
+            int totalHeight = (buttonHeight * menuList.Count) + (gap * menuList.Count);
 
-            for (int i = 0; i < menuList.Count; i++)
+            int count = 0;
+            foreach (var button in menuList)
             {
-                menuList[i].YPosition = (i * buttonHeight) + (centerY + (totalHeight / 2));
+                count++;
+                button.YPosition = centerY;
             }
-            
         }
 
+        public static void Update()
+        {
+            foreach (var button in menuList)
+            {
+                button.Update();
+            }
+        }
 
         public static void Draw(SpriteBatch spriteBatch)
         {
