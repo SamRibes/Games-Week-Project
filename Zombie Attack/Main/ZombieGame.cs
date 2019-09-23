@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Zombie_Attack
@@ -13,6 +14,7 @@ namespace Zombie_Attack
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        List<Button> menuList = new List<Button>();
 
         public static Texture2D PlayerTexture { get; private set; }
         public static Texture2D BulletTexture { get; private set; }
@@ -37,8 +39,24 @@ namespace Zombie_Attack
                 return new Vector2(Viewport.Width, Viewport.Height);
             }
         }
+        private static Vector2 TopLeftOfScreen
+        {
+            get
+            {
+                return new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40);
+            }
+        }
         public static SpriteFont Font { get; private set; }
         public SpriteFont BigFont { get; private set; }
+
+        public GameState _state;
+        public enum GameState
+        {
+            MainMenu,
+            MainGame,
+            GameComplete,
+            GameOver,
+        }
 
         public static int GameTimeInSeconds, LastGameTimeInSeconds;
         public static int CurrentStage { get; set; }
@@ -46,14 +64,15 @@ namespace Zombie_Attack
 
         private int stageChangeCountDown = 0;
 
-
         public ZombieGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = false;
-            graphics.PreferredBackBufferWidth = 1200;
-            graphics.PreferredBackBufferHeight = 1200;
+            graphics.IsFullScreen = true;
+            //graphics.PreferredBackBufferWidth = 1200;
+            //graphics.PreferredBackBufferHeight = 1200;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             Instance = this;
         }
 
@@ -66,6 +85,8 @@ namespace Zombie_Attack
         protected override void Initialize()
         {
             base.Initialize();
+            ButtonManager.Add(BulletTexture);
+            _state = GameState.MainMenu;
             EntityManager.Add(Player.Instance);
             LastGameTimeInSeconds = 0;
             CurrentStage = 1;
@@ -117,10 +138,27 @@ namespace Zombie_Attack
             {
                 Exit();
             }
-            Input.Update();
-            EntityManager.Update();
-            EnemySpawner.Update();
-            
+
+            switch (_state)
+            {
+                case GameState.MainMenu:
+                    ButtonManager.Add();
+                    // UpdateMainMenu(gameTime);
+                    break;
+                case GameState.MainGame:
+                    Input.Update();
+                    EntityManager.Update();
+                    EnemySpawner.Update();
+                    //UpdateLevelOne(gameTime);
+                    break;
+                case GameState.GameComplete:
+                    //UpdateGameComplete(gameTime);
+                    break;
+                case GameState.GameOver:
+                    //UpdateEndOfGame(gameTime);
+                    break;
+            }
+
             base.Update(gameTime);
         }
 
@@ -144,11 +182,10 @@ namespace Zombie_Attack
                 StageChange = false;
             }
 
-            if(Player.Instance.IsDead)
+            if (Player.Instance.IsDead)
             {
                 spriteBatch.DrawString(BigFont, $"GAME OVER. You got to round {CurrentStage}.", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
             }
-
             else if (stageChangeCountDown > 0)
             {
                 spriteBatch.DrawString(BigFont, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);
@@ -158,15 +195,14 @@ namespace Zombie_Attack
             else
             {
                 EntityManager.PauseEnemies = false;
-                spriteBatch.DrawString(Font, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40), Color.White);
-                spriteBatch.DrawString(Font, $"Score: {Player.Instance.Score}", new Vector2(ScreenSize.X / 40, (ScreenSize.Y / 40)*3), Color.White);
-                spriteBatch.DrawString(Font, $"Next wave in: {EnemySpawner.NextWaveIn}", new Vector2(ScreenSize.X / 40, (ScreenSize.Y / 40)*5), Color.White);
-                spriteBatch.DrawString(Font, $"Enemies left: {EnemySpawner.EnemiesLeft}", new Vector2((ScreenSize.X / 40)*35, ScreenSize.Y / 40), Color.White);
+                spriteBatch.DrawString(Font, $"Stage {CurrentStage}", TopLeftOfScreen, Color.White);
+                spriteBatch.DrawString(Font, $"Score: {Player.Instance.Score}", TopLeftOfScreen * 3, Color.White);
+                spriteBatch.DrawString(Font, $"Next wave in: {EnemySpawner.NextWaveIn}", TopLeftOfScreen * 5, Color.White);
+                spriteBatch.DrawString(Font, $"Enemies left: {EnemySpawner.EnemiesLeft}", new Vector2((ScreenSize.X / 40) * 35, ScreenSize.Y / 40), Color.White);
 
                 EntityManager.Draw(spriteBatch);
             }
 
-            
             spriteBatch.End();
 
             base.Draw(gameTime);

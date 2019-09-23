@@ -16,6 +16,7 @@ namespace Zombie_Attack
         const int cooldownFrames = 30;
         int cooldownLeft = 0;
         int framesTillRespawn = 0;
+        public int Lives = 3;
         public bool IsDead
         {
             get
@@ -95,9 +96,16 @@ namespace Zombie_Attack
 
         public void Kill()
         {
-            framesTillRespawn = 120;
-            File.AppendAllText("scores.txt", (Instance.Score.ToString() + "\n"));
-            Instance.Score = 0;
+            if (Lives == 0)
+            {
+                File.AppendAllText("scores.txt", (Instance.Score.ToString() + "\n"));
+                Instance.Score = 0;
+            }
+            else
+            {
+                framesTillRespawn = 120;
+                Lives--;
+            }
         }
     }
 }
