@@ -160,11 +160,14 @@ namespace Zombie_Attack
         {
             while (true)
             {
-                var bulletVelocity = 0.4f;
+                var bulletVelocity = 5f;
                 var aim = (Player.Instance.Position - Position);
                 Velocity += aim.ScaleTo(acceleration);
 
-                Orientation = Player.Instance.Position.ToAngle();
+                if (Velocity != Vector2.Zero)
+                {
+                    Orientation = Velocity.ToAngle();
+                }
 
                 if (cooldownRemaining <= 0)
                 {

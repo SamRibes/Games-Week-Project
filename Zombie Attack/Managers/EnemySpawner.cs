@@ -30,7 +30,6 @@ namespace Zombie_Attack
 
         public static void Update()
         {
-            //level = current round * 5
             Random rand = new Random();
             float screenSizeX = ZombieGame.ScreenSize.X;
             float screenSizeY = ZombieGame.ScreenSize.Y;
@@ -50,7 +49,7 @@ namespace Zombie_Attack
                         Vector2 posisitonToSpawn = Vector2.Zero;
 
                         #region Choose a position for the zombie to spawn
-                        switch (rand.Next(3))
+                        switch (rand.Next(4))
                         {
                             case 0:
                                 posisitonToSpawn = new Vector2(-10f, screenSizeY / 2f);
@@ -69,24 +68,24 @@ namespace Zombie_Attack
                         }
                         #endregion
                         #region Choose a random zombie type
-                        EntityManager.Add(Enemy.CreateRangedZombie(posisitonToSpawn));
-                        //switch (rand.Next(3))
-                        //{
-                        //    case 0:
-                        //        EntityManager.Add(Enemy.CreateBasicZombie(posisitonToSpawn));
-                        //        break;
-                        //    case 1:
-                        //        EntityManager.Add(Enemy.CreateFastZombie(posisitonToSpawn));
-                        //        break;
-                        //    case 2:
-                        //        EntityManager.Add(Enemy.CreateTankZombie(posisitonToSpawn));
-                        //        break;
-                        //    case 3:
-                        //        EntityManager.Add(Enemy.CreateRangedZombie(posisitonToSpawn));
-                        //        break;
-                        //    default:
-                        //        break;
-                        //}
+                        //EntityManager.Add(Enemy.CreateRangedZombie(posisitonToSpawn));
+                        switch (rand.Next(4))
+                        {
+                            case 0:
+                                EntityManager.Add(Enemy.CreateBasicZombie(posisitonToSpawn));
+                                break;
+                            case 1:
+                                EntityManager.Add(Enemy.CreateFastZombie(posisitonToSpawn));
+                                break;
+                            case 2:
+                                EntityManager.Add(Enemy.CreateTankZombie(posisitonToSpawn));
+                                break;
+                            case 3:
+                                EntityManager.Add(Enemy.CreateRangedZombie(posisitonToSpawn));
+                                break;
+                            default:
+                                break;
+                        }
                         #endregion
 
                     }
