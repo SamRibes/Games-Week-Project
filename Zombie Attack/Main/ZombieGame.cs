@@ -16,6 +16,7 @@ namespace Zombie_Attack
 
         public static Texture2D PlayerTexture { get; private set; }
         public static Texture2D BulletTexture { get; private set; }
+        public static Texture2D EnemySpitTexture { get; private set; }
         public static Texture2D BasicZombieTexture { get; private set; }
         public static Texture2D FastZombieTexture { get; private set; }
         public static Texture2D TankZombieTexture { get; private set; }
@@ -84,6 +85,7 @@ namespace Zombie_Attack
             // TODO: use this.Content to load your game content here
             PlayerTexture = Content.Load<Texture2D>("Player/Player");
             BulletTexture = Content.Load<Texture2D>("Bullets/Bullet");
+            EnemySpitTexture = Content.Load<Texture2D>("Bullets/EnemySpit");
             BasicZombieTexture = Content.Load<Texture2D>("Enemies/BasicZombie");
             FastZombieTexture = Content.Load<Texture2D>("Enemies/FastZombie");
             TankZombieTexture = Content.Load<Texture2D>("Enemies/TankZombie");

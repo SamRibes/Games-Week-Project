@@ -49,6 +49,18 @@
 /processorParam:TextureFormat=Color
 /build:Bullets/BulletPlaceHolder.png
 
+#begin Bullets/EnemySpit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Bullets/EnemySpit.png
+
 #begin Enemies/BasicZombie.png
 /importer:TextureImporter
 /processor:TextureProcessor

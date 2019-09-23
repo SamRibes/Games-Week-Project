@@ -12,7 +12,7 @@ namespace Zombie_Attack
     {
         public EnemyBullet(Vector2 position, Vector2 velocity)
         {
-            image = ZombieGame.BulletTexture;
+            image = ZombieGame.EnemySpitTexture;
             this.Position = position;
             this.Velocity = velocity;
             Orientation = Velocity.ToAngle();
