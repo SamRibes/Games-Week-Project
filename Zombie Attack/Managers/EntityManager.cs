@@ -157,6 +157,7 @@ namespace Zombie_Attack
                     enemies.ForEach(e => e.WasDestroyed());
                     bullets.ForEach(e => e.WasDestroyed());
                     enemyBullets.ForEach(e => e.WasDestroyed());
+                    pickups.ForEach(p => p.WasDestroyed());
                     break;
                 }
             }
@@ -226,8 +227,5 @@ namespace Zombie_Attack
             
 
         }
-
-
-
     }
 }
