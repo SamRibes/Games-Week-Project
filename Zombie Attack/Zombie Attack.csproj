@@ -41,11 +41,15 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Buttons\AddButton.cs" />
+    <Compile Include="Buttons\ExitButton.cs" />
+    <Compile Include="Buttons\StartButton.cs" />
     <Compile Include="Entities\Bullet.cs" />
-    <Compile Include="Entities\Button.cs" />
+    <Compile Include="Buttons\Button.cs" />
     <Compile Include="Entities\Enemy.cs" />
     <Compile Include="Entities\EnemyBullet.cs" />
     <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Pickup.cs" />
     <Compile Include="Managers\ButtonManager.cs" />
     <Compile Include="Managers\EnemySpawner.cs" />
     <Compile Include="Managers\EntityManager.cs" />

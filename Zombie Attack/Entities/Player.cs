@@ -1,12 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zombie_Attack
 {
@@ -17,7 +11,7 @@ namespace Zombie_Attack
         int cooldownLeft = 0;
         int framesTillRespawn = 0;
         public int Lives = 3;
-        public bool IsDead
+        public bool IsRespawning
         {
             get
             {
@@ -48,7 +42,7 @@ namespace Zombie_Attack
 
         public override void Update()
         {
-            if (IsDead)
+            if (IsRespawning)
             {
                 framesTillRespawn--;
                 return;
@@ -83,12 +77,11 @@ namespace Zombie_Attack
             {
                 cooldownLeft = 1;
             }
-            
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if(!IsDead)
+            if(!IsRespawning)
             {
                 base.Draw(spriteBatch);
             }
@@ -99,13 +92,32 @@ namespace Zombie_Attack
             if (Lives == 0)
             {
                 File.AppendAllText("scores.txt", (Instance.Score.ToString() + "\n"));
-                Instance.Score = 0;
+                ButtonManager.ClearButtons();
+                ButtonManager.Add(new StartButton(ZombieGame.StartButtonTexture));
+                ButtonManager.Add(new ExitButton(ZombieGame.ExitButtonTexture));
+                ZombieGame._state = ZombieGame.GameState.GameOver;
             }
             else
             {
-                framesTillRespawn = 120;
                 Lives--;
+                framesTillRespawn = 120;
             }
         }
+
+        public void GotFireRatePowerUp()
+        {
+
+        }
+
+        public void GotTripleShotPowerUp()
+        {
+
+        }
+
+        public void GotSpeedPowerUp()
+        {
+
+        }
+
     }
 }

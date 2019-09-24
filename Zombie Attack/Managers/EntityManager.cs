@@ -1,10 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zombie_Attack
 {
@@ -19,6 +16,8 @@ namespace Zombie_Attack
         static List<Bullet> bullets = new List<Bullet>();
 
         static List<EnemyBullet> enemyBullets = new List<EnemyBullet>();
+
+        static List<Pickup> pickups = new List<Pickup>();
 
         //Checked when looping through entities
         static bool isUpdating;
@@ -71,6 +70,10 @@ namespace Zombie_Attack
             {
                 enemyBullets.Add(entity as EnemyBullet);
             }
+            else if (entity is Pickup)
+            {
+                pickups.Add(entity as Pickup);
+            }
         }
 
         //Check that the distance between two entities is lesss than their radii combined (checking the distance squared against the radii squared is faster than not squaring)
@@ -83,6 +86,29 @@ namespace Zombie_Attack
 
         static void HandleCollisions()
         {
+            //Handle collision between player and pickups
+            for (int i = 0; i < EnemyCount; i++)
+            {
+                if (IsColliding(Player.Instance, pickups[i]))
+                {
+                    switch (pickups[i].ID)
+                    {
+                        case 1:
+                            Player.Instance.GotFireRatePowerUp();
+                            break;
+                        case 2:
+                            Player.Instance.GotTripleShotPowerUp();
+                            break;
+                        case 3:
+                            Player.Instance.GotSpeedPowerUp();
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            }
+
             //Handle collision between enemies
             for (int i = 0; i < EnemyCount; i++)
             {
@@ -137,6 +163,27 @@ namespace Zombie_Attack
 
         }
 
+        public static void ClearAll()
+        {
+            foreach (var enemy in enemies)
+            {
+                enemy.WasDestroyed();
+            }
+            foreach (var bullet in bullets)
+            {
+                bullet.WasDestroyed();
+            }
+            foreach (var enemyBullet in enemyBullets)
+            {
+                enemyBullet.WasDestroyed();
+            }
+            foreach (var pickup in pickups)
+            {
+                pickup.WasDestroyed();
+            }
+
+        }
+
         //used to loop through the entities list and make each of them update their properties
         //Also cleans up any destroyed entities
         public static void Update()
@@ -163,6 +210,8 @@ namespace Zombie_Attack
                 entities = entities.Where(e => !e.IsExpired).ToList();
                 bullets = bullets.Where(b => !b.IsExpired).ToList();
                 enemies = enemies.Where(e => !e.IsExpired).ToList();
+                enemyBullets = enemyBullets.Where(eB => !eB.IsExpired).ToList();
+                pickups = pickups.Where(p => !p.IsExpired).ToList();
             }
 
         }

@@ -40,7 +40,6 @@ namespace Zombie_Attack
                 if ((ZombieGame.GameTimeInSeconds != ZombieGame.LastGameTimeInSeconds) &&
                     ZombieGame.GameTimeInSeconds % spawnDelay == 0)
                 {
-                    Console.WriteLine("In the if statement");
                     ZombieGame.LastGameTimeInSeconds = ZombieGame.GameTimeInSeconds;
 
                     for (int i = 0; i < zombiesToSpawn; i++)

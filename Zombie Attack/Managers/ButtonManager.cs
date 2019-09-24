@@ -1,10 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zombie_Attack
 {
@@ -14,24 +9,37 @@ namespace Zombie_Attack
         private static int centerX = ZombieGame.Viewport.Width / 2;
         private static int centerY = ZombieGame.Viewport.Height / 2;
 
-        public static void Add(Texture2D texture)
+        public static void Add(Button button)
         {
-            menuList.Add(new Button(texture));
+            if (button is StartButton)
+            {
+                menuList.Add(button as StartButton);
+            }
+            if (button is ExitButton)
+            {
+                menuList.Add(button as ExitButton);
+            }
+
             int gap = 10;
-            int buttonHeight = 100;
+            int buttonHeight = button.Height;
             int totalHeight = (buttonHeight * menuList.Count) + (gap * menuList.Count);
 
             int count = 0;
-            foreach (var button in menuList)
+            foreach (var x in menuList)
             {
+                x.Y = (centerY - (totalHeight/2)) + ((buttonHeight + gap) * count);
                 count++;
-                button.YPosition = centerY;
             }
+        }
+
+        public static void ClearButtons()
+        {
+            menuList.Clear();
         }
 
         public static void Update()
         {
-            foreach (var button in menuList)
+            foreach (Button button in menuList)
             {
                 button.Update();
             }
