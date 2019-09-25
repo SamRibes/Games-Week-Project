@@ -7,10 +7,20 @@ namespace Zombie_Attack
     class Player : Entity
     {
         private static Player instance;
-        const int cooldownFrames = 30;
-        int cooldownLeft = 0;
-        int framesTillRespawn = 0;
+        private int cooldownFrames = 30;
+        private int cooldownLeft = 0;
+        private int framesTillRespawn = 0;
         public int Lives = 3;
+
+        #region Pickup Cooldowns
+        private int fireRateUpCooldownFrames = 300;
+        private int fireRateUpCoolDownLeft = 0;
+        private int speedUpCooldownFrames = 300;
+        private int speedUpCoolDownLeft = 0;
+        private int tripleShotCooldownFrames = 300;
+        private int tripleShotCoolDownLeft = 0;
+        #endregion
+
         public bool IsRespawning
         {
             get
@@ -18,7 +28,30 @@ namespace Zombie_Attack
                 return framesTillRespawn > 0;
             }
         }
+        public bool HasFireRateUp
+        {
+            get
+            {
+                return fireRateUpCoolDownLeft > 0;
+            }
+        }
+        public bool HasSpeedUp
+        {
+            get
+            {
+                return speedUpCoolDownLeft > 0;
+            }
+        }
+        public bool HasTripleShot
+        {
+            get
+            {
+                return tripleShotCoolDownLeft > 0;
+            }
+        }
+
         public int Score;
+        float speed = 8;
 
         public static Player Instance
         {
@@ -48,7 +81,31 @@ namespace Zombie_Attack
                 return;
             }
 
-            const float speed = 8;
+            if (HasFireRateUp)
+            {
+                cooldownFrames = 5;
+            }
+            else
+            {
+                cooldownFrames = 30;
+            }
+            if (HasSpeedUp)
+            {
+                speed = 4;
+            }
+            else
+            {
+                speed = 8;
+            }
+            if (HasTripleShot)
+            {
+                cooldownFrames = 5;
+            }
+            else
+            {
+                cooldownFrames = 30;
+            }
+
             var aim = Input.GetAimDirection();
             Velocity = speed * Input.GetMovementDirection();
             
@@ -106,7 +163,7 @@ namespace Zombie_Attack
 
         public void GotFireRatePowerUp()
         {
-
+            fireRateUpCoolDownLeft = fireRateUpCooldownFrames;
         }
 
         public void GotTripleShotPowerUp()

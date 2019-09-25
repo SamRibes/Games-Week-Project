@@ -87,7 +87,7 @@ namespace Zombie_Attack
         static void HandleCollisions()
         {
             //Handle collision between player and pickups
-            for (int i = 0; i < EnemyCount; i++)
+            for (int i = 0; i < pickups.Count; i++)
             {
                 if (IsColliding(Player.Instance, pickups[i]))
                 {

@@ -16,6 +16,14 @@ namespace Zombie_Attack
             }
         }
 
+        public static Vector2 MousePositionForCursor
+        {
+            get
+            {
+                return new Vector2(mouseState.X - 15, mouseState.Y - 15);
+            }
+        }
+
         public static void Update()
         {
             lastKeyboardState = keyboardState;

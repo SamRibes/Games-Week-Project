@@ -15,6 +15,7 @@ namespace Zombie_Attack
         List<Button> menuList = new List<Button>();
         public static bool SetQuit = false;
 
+        #region Texture Objects
         public static Texture2D PlayerTexture { get; private set; }
         public static Texture2D BulletTexture { get; private set; }
         public static Texture2D EnemySpitTexture { get; private set; }
@@ -28,6 +29,11 @@ namespace Zombie_Attack
         public static Texture2D FireRateTexture { get; private set; }
         public static Texture2D TripleShotTexture { get; private set; }
         public static Texture2D SpeedTexture { get; private set; }
+        public static Texture2D CrossHairTexture { get; private set; }
+        public static SpriteFont Font { get; private set; }
+        public SpriteFont BigFont { get; private set; }
+        #endregion
+
         public static ZombieGame Instance { get; private set; }
         public static Viewport Viewport
         {
@@ -50,8 +56,6 @@ namespace Zombie_Attack
                 return new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40);
             }
         }
-        public static SpriteFont Font { get; private set; }
-        public SpriteFont BigFont { get; private set; }
 
         public static GameState _state;
         public enum GameState
@@ -72,9 +76,7 @@ namespace Zombie_Attack
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = false;
-            //graphics.PreferredBackBufferWidth = 1200;
-            //graphics.PreferredBackBufferHeight = 1200;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             Instance = this;
@@ -91,15 +93,11 @@ namespace Zombie_Attack
             base.Initialize();
             ButtonManager.Add(new StartButton(StartButtonTexture));
             ButtonManager.Add(new ExitButton(ExitButtonTexture));
-
+            IsMouseVisible = false;
             _state = GameState.MainMenu;
-
             EntityManager.Add(Player.Instance);
-
             LastGameTimeInSeconds = 0;
             CurrentStage = 1;
-
-            base.IsMouseVisible = true;
         }
 
         /// <summary>
@@ -112,18 +110,23 @@ namespace Zombie_Attack
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-            PlayerTexture = Content.Load<Texture2D>("Player/Player");
-            BulletTexture = Content.Load<Texture2D>("Bullets/PlayerBullet");
+            //PlayerTexture = Content.Load<Texture2D>("Player/Player");
+            PlayerTexture = Content.Load<Texture2D>("Player/PlayerPlaceholder");
+            //BulletTexture = Content.Load<Texture2D>("Bullets/PlayerBullet");
+            BulletTexture = Content.Load<Texture2D>("Bullets/BulletPlaceHolder");
             EnemySpitTexture = Content.Load<Texture2D>("Bullets/EnemySpit");
-            BasicZombieTexture = Content.Load<Texture2D>("Enemies/BasicZombie");
+            //BasicZombieTexture = Content.Load<Texture2D>("Enemies/BasicZombie");
+            BasicZombieTexture = Content.Load<Texture2D>("Enemies/EnemyPlaceholder");
             FastZombieTexture = Content.Load<Texture2D>("Enemies/FastZombie");
             TankZombieTexture = Content.Load<Texture2D>("Enemies/TankZombie");
             RangedZombieTexture = Content.Load<Texture2D>("Enemies/RangedZombie");
             GroundTexture = Content.Load<Texture2D>("Backgrounds/GroundTexture");
             StartButtonTexture = Content.Load<Texture2D>("Buttons/StartButton");
             ExitButtonTexture = Content.Load<Texture2D>("Buttons/ExitButton");
+            CrossHairTexture = Content.Load<Texture2D>("Crosshair");
             Font = Content.Load<SpriteFont>("Fonts/Font");
             BigFont = Content.Load<SpriteFont>("Fonts/BigStringFont");
+
         }
 
         /// <summary>
@@ -204,10 +207,11 @@ namespace Zombie_Attack
             {
                 case GameState.MainMenu:
                     ButtonManager.Draw(spriteBatch);
+                    spriteBatch.Draw(ZombieGame.CrossHairTexture, Input.MousePositionForCursor, Color.White);
                     break;
                 case GameState.MainGame:
-                    spriteBatch.Draw(GroundTexture, Vector2.Zero, Color.White);
-                    
+                    spriteBatch.Draw(GroundTexture, Vector2.Zero, Color.Black);
+                    spriteBatch.Draw(ZombieGame.CrossHairTexture, Input.MousePositionForCursor, Color.White);
                     if (stageChangeCountDown > 0)
                     {
                         spriteBatch.DrawString(BigFont, $"Stage {CurrentStage}", new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2), Color.White);

@@ -15,7 +15,6 @@
 
 ## Game is done in rounds
 
-    Each round lasts 60 seconds
     Each round becomes increasingly difficult
         Difficulty is increased through more enemies on screen at a time
     The player starts with 3 lives which are lost whenever they die
