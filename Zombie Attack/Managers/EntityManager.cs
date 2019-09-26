@@ -91,6 +91,7 @@ namespace Zombie_Attack
             {
                 if (IsColliding(Player.Instance, pickups[i]))
                 {
+                    pickups[i].WasDestroyed();
                     switch (pickups[i].ID)
                     {
                         case 1:
@@ -144,6 +145,7 @@ namespace Zombie_Attack
                     enemies.ForEach(e => e.WasDestroyed());
                     bullets.ForEach(e => e.WasDestroyed());
                     enemyBullets.ForEach(e => e.WasDestroyed());
+                    pickups.ForEach(p => p.WasDestroyed());
                     break;
                 }
             }

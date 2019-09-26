@@ -37,6 +37,11 @@ namespace Zombie_Attack
         //Abstract so that the update logic can be different for different kinds of entities
         public abstract void Update();
 
+        public void WasDestroyed()
+        {
+            IsExpired = true;
+        }
+
         //Called when drawing the entity to the canvas
         public virtual void Draw(SpriteBatch spriteBatch)
         {

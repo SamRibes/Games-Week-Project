@@ -34,6 +34,34 @@ namespace Zombie_Attack
             float screenSizeX = ZombieGame.ScreenSize.X;
             float screenSizeY = ZombieGame.ScreenSize.Y;
 
+            if (ZombieGame.CurrentStage == 3)
+            {
+                spawnDelay = 5;
+            }
+            if (ZombieGame.CurrentStage == 5)
+            {
+                spawnDelay = 4;
+            }
+            if (ZombieGame.CurrentStage > 5)
+            {
+                spawnDelay = 4;
+            }
+            if (ZombieGame.CurrentStage == 2)
+            {
+                zombiesToSpawn = 4;
+            }
+            if (ZombieGame.CurrentStage == 4)
+            {
+                zombiesToSpawn = 6;
+            }
+            if (ZombieGame.CurrentStage == 6)
+            {
+                zombiesToSpawn = 8;
+            }
+            if (ZombieGame.CurrentStage > 6)
+            {
+                zombiesToSpawn = 10;
+            }
 
             if (enemiesForRound < (ZombieGame.CurrentStage * zombiesToSpawn))
             {
@@ -67,24 +95,24 @@ namespace Zombie_Attack
                         }
                         #endregion
                         #region Choose a random zombie type
-                        EntityManager.Add(Enemy.CreateBasicZombie(posisitonToSpawn));
-                        //switch (rand.Next(4))
-                        //{
-                        //    case 0:
-                        //        EntityManager.Add(Enemy.CreateBasicZombie(posisitonToSpawn));
-                        //        break;
-                        //    case 1:
-                        //        EntityManager.Add(Enemy.CreateFastZombie(posisitonToSpawn));
-                        //        break;
-                        //    case 2:
-                        //        EntityManager.Add(Enemy.CreateTankZombie(posisitonToSpawn));
-                        //        break;
-                        //    case 3:
-                        //        EntityManager.Add(Enemy.CreateRangedZombie(posisitonToSpawn));
-                        //        break;
-                        //    default:
-                        //        break;
-                        //}
+                        //EntityManager.Add(Enemy.CreateBasicZombie(posisitonToSpawn));
+                        switch (rand.Next(4))
+                        {
+                            case 0:
+                                EntityManager.Add(Enemy.CreateBasicZombie(posisitonToSpawn));
+                                break;
+                            case 1:
+                                EntityManager.Add(Enemy.CreateFastZombie(posisitonToSpawn));
+                                break;
+                            case 2:
+                                EntityManager.Add(Enemy.CreateTankZombie(posisitonToSpawn));
+                                break;
+                            case 3:
+                                EntityManager.Add(Enemy.CreateRangedZombie(posisitonToSpawn));
+                                break;
+                            default:
+                                break;
+                        }
                         #endregion
 
                     }
@@ -92,16 +120,17 @@ namespace Zombie_Attack
             }
             else if (EntityManager.EnemyCount == 0)
             {
-                if (ZombieGame.CurrentStage == 3 || ZombieGame.CurrentStage == 5)
-                {
-                    spawnDelay--;
-                    Console.WriteLine("Spawn delay" + spawnDelay);
-                }
-                if (ZombieGame.CurrentStage == 2 || ZombieGame.CurrentStage == 4 || ZombieGame.CurrentStage == 6)
-                {
-                    spawnDelay--;
-                    Console.WriteLine("Spawn delay" + spawnDelay);
-                }
+                //if (ZombieGame.CurrentStage == 3 || ZombieGame.CurrentStage == 5)
+                //{
+                //    spawnDelay--;
+                //    Console.WriteLine("Spawn delay" + spawnDelay);
+                //}
+                //if (ZombieGame.CurrentStage == 2 || ZombieGame.CurrentStage == 4 || ZombieGame.CurrentStage == 6)
+                //{
+                //    zombiesToSpawn--;
+                //    Console.WriteLine("Spawn delay" + spawnDelay);
+                //}
+                
                 enemiesForRound = 0;
                 ZombieGame.StageChange = true;
             }

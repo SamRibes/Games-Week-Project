@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.IO;
 
 namespace Zombie_Attack
@@ -11,14 +12,16 @@ namespace Zombie_Attack
         private int cooldownLeft = 0;
         private int framesTillRespawn = 0;
         public int Lives = 3;
+        private float bulletVelocity = 15f;
 
-        #region Pickup Cooldowns
-        private int fireRateUpCooldownFrames = 300;
+        #region Pickup Variables
+        private int fireRateUpCooldownFrames = 120;
         private int fireRateUpCoolDownLeft = 0;
         private int speedUpCooldownFrames = 300;
         private int speedUpCoolDownLeft = 0;
         private int tripleShotCooldownFrames = 300;
         private int tripleShotCoolDownLeft = 0;
+        private bool tripleShotActive = false;
         #endregion
 
         public bool IsRespawning
@@ -83,6 +86,7 @@ namespace Zombie_Attack
 
             if (HasFireRateUp)
             {
+                fireRateUpCoolDownLeft--;
                 cooldownFrames = 5;
             }
             else
@@ -91,7 +95,8 @@ namespace Zombie_Attack
             }
             if (HasSpeedUp)
             {
-                speed = 4;
+                speed = 12;
+                speedUpCoolDownLeft--;
             }
             else
             {
@@ -99,22 +104,24 @@ namespace Zombie_Attack
             }
             if (HasTripleShot)
             {
-                cooldownFrames = 5;
+                tripleShotActive = true;
+                tripleShotCoolDownLeft--;
             }
             else
             {
-                cooldownFrames = 30;
+                tripleShotActive = false;
             }
-
+            
             var aim = Input.GetAimDirection();
+
             Velocity = speed * Input.GetMovementDirection();
-            
+
             Position += Velocity;
-            Position = Vector2.Clamp(Position, Size/2, ZombieGame.ScreenSize - Size/2);
-            
+            Position = Vector2.Clamp(Position, Size / 2, ZombieGame.ScreenSize - Size / 2);
+
             Orientation = aim.ToAngle();
-           
-            
+
+
             if (Input.WasLeftMouseClicked() == true)
             {
                 cooldownLeft--;
@@ -123,14 +130,32 @@ namespace Zombie_Attack
             if (cooldownLeft <= 0)
             {
                 cooldownLeft = cooldownFrames;
-                EntityManager.Add(new Bullet(Position, aim*15));
+                float aimAngle = aim.ToAngle();
+                if (!tripleShotActive)
+                {
+                    Quaternion aimQuat = Quaternion.CreateFromYawPitchRoll(0, 0, aimAngle);
+
+                    Vector2 offset = Vector2.Transform(new Vector2(25, 0), aimQuat);
+                    EntityManager.Add(new Bullet(Position + offset, aim * bulletVelocity));
+                }
+                else
+                {
+                    Quaternion aimQuat = Quaternion.CreateFromYawPitchRoll(0, 0, aimAngle);
+
+                    Vector2 offset = Vector2.Transform(new Vector2(25, -15), aimQuat);
+                    EntityManager.Add(new Bullet(Position + offset, aim * bulletVelocity));
+                    offset = Vector2.Transform(new Vector2(25, 15), aimQuat);
+                    EntityManager.Add(new Bullet(Position + offset, aim * bulletVelocity));
+                    offset = Vector2.Transform(new Vector2(30, 0), aimQuat);
+                    EntityManager.Add(new Bullet(Position + offset, aim * bulletVelocity));
+                }
                 if (cooldownLeft > 0)
                 {
                     cooldownLeft--;
                 }
             }
 
-            if(Input.WasLeftMouseClicked() == false)
+            if (Input.WasLeftMouseClicked() == false)
             {
                 cooldownLeft = 1;
             }
@@ -138,7 +163,7 @@ namespace Zombie_Attack
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            if(!IsRespawning)
+            if (!IsRespawning)
             {
                 base.Draw(spriteBatch);
             }
@@ -157,23 +182,23 @@ namespace Zombie_Attack
             else
             {
                 Lives--;
+                Position = ZombieGame.CenterOfScreen;
                 framesTillRespawn = 120;
             }
         }
+
 
         public void GotFireRatePowerUp()
         {
             fireRateUpCoolDownLeft = fireRateUpCooldownFrames;
         }
-
         public void GotTripleShotPowerUp()
         {
-
+            tripleShotCoolDownLeft = tripleShotCooldownFrames;
         }
-
         public void GotSpeedPowerUp()
         {
-
+            speedUpCoolDownLeft = speedUpCooldownFrames;
         }
 
     }

@@ -34,6 +34,7 @@ namespace Zombie_Attack
             ApplyBehaviours();
         }
 
+        #region Create Zombies
         public static Enemy CreateBasicZombie(Vector2 position)
         {
             var enemy = new Enemy(ZombieGame.BasicZombieTexture, position, 2);
@@ -65,19 +66,38 @@ namespace Zombie_Attack
 
             return enemy;
         }
+        #endregion
 
         public void WasShot()
         {
             hitPoints--;
             if (hitPoints == 0)
             {
-                IsExpired = true;
+                WasDestroyed();
                 Player.Instance.Score += 50;
             }
         }
-        public void WasDestroyed()
+        public new void WasDestroyed()
         {
             IsExpired = true;
+            Random rand = new Random();
+            if (rand.Next(11) <= 2)
+            {
+                switch (rand.Next(1, 4))
+                {
+                    case 1:
+                        EntityManager.Add(Pickup.CreateFireRatePickup(this.Position));
+                        break;
+                    case 2:
+                        EntityManager.Add(Pickup.CreateSpeedUpPickup(this.Position));
+                        break;
+                    case 3:
+                        EntityManager.Add(Pickup.CreateTripleShotPickup(this.Position));
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         public void HandleCollision(Enemy other)
