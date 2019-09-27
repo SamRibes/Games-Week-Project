@@ -28,7 +28,7 @@ namespace Zombie_Attack
         }
         public static int SpawnDelay { set { spawnDelay = 6; } }
 
-        public static void Update()
+        public static void Update(GameTime gameTime)
         {
             Random rand = new Random();
             float screenSizeX = ZombieGame.ScreenSize.X;

@@ -35,7 +35,7 @@ namespace Zombie_Attack
         }
 
         //Abstract so that the update logic can be different for different kinds of entities
-        public abstract void Update();
+        public abstract void Update(GameTime gameTime);
 
         public void WasDestroyed()
         {

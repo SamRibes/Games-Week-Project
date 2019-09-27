@@ -84,7 +84,7 @@ namespace Zombie_Attack
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             Instance = this;
@@ -173,8 +173,8 @@ namespace Zombie_Attack
                     break;
                 case GameState.MainGame:
                     Input.Update();
-                    EntityManager.Update();
-                    EnemySpawner.Update();
+                    EntityManager.Update(gameTime);
+                    EnemySpawner.Update(gameTime);
 
                     if (StageChange == true)
                     {

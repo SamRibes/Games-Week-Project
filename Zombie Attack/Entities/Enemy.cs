@@ -24,7 +24,7 @@ namespace Zombie_Attack
             this.hitPoints = hitPoints;
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             Position += Velocity;
             Position = Vector2.Clamp(Position, Size / 2, ZombieGame.ScreenSize - Size / 2);

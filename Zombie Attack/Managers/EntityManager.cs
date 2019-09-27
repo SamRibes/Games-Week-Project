@@ -189,7 +189,7 @@ namespace Zombie_Attack
 
         //used to loop through the entities list and make each of them update their properties
         //Also cleans up any destroyed entities
-        public static void Update()
+        public static void Update(GameTime gameTime)
         {
             if (!PauseEnemies)
             {
@@ -198,7 +198,7 @@ namespace Zombie_Attack
 
                 foreach (var entity in entities)
                 {
-                    entity.Update();
+                    entity.Update(gameTime);
                 }
 
                 isUpdating = false;

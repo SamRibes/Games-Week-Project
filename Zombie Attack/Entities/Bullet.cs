@@ -17,7 +17,7 @@ namespace Zombie_Attack
             Orientation = Velocity.ToAngle();
             Radius = 8;
         }
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             if(Velocity.LengthSquared() > 0)
             {
@@ -31,7 +31,7 @@ namespace Zombie_Attack
                 IsExpired = true;
             }
         }
-        public void WasDestroyed()
+        public new void WasDestroyed()
         {
             IsExpired = true;
         }

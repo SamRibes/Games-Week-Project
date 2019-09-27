@@ -12,7 +12,7 @@ namespace Zombie_Attack
             Orientation = Velocity.ToAngle();
             Radius = 8;
         }
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             if (Velocity.LengthSquared() > 0)
             {

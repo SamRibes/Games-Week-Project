@@ -76,7 +76,7 @@ namespace Zombie_Attack
             Radius = 10;
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             if (IsRespawning)
             {
@@ -114,6 +114,7 @@ namespace Zombie_Attack
             
             var aim = Input.GetAimDirection();
 
+            speed = speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
             Velocity = speed * Input.GetMovementDirection();
 
             Position += Velocity;

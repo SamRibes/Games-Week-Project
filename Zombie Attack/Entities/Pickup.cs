@@ -48,7 +48,7 @@ namespace Zombie_Attack
             return pickup;
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             ApplyPickUpTypes();
             FramesTillDespawn--;
