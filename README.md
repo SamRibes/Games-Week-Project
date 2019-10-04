@@ -7,8 +7,6 @@ Repo for my games week project for Sparta Global. I have made a arcade type top-
 
 ## [User Stories](UserStories.md)
 
-## [Trello](https://trello.com/b/OFoVrFCD/sams-games-week-project)
-
 ## Screenshots
 
    <img src= "https://github.com/SamRibes/Games-Week-Project/blob/master/Screenshots/ZombieTypes.png" width= "2000">
