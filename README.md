@@ -1,9 +1,27 @@
 # Games-Week-Project
 
-Repo for my games week project for Sparta Global.
+Repo for my games week project for Sparta Global. I have made a arcade type top-down 2D shooter where you play as a soldier who fights of zombies while surviving as many rounds as possible.
 
-Features of the game are shown in [Feature List](FeatureList.md).
 
-User Stories are shown in [User Stories](UserStories.md).
+## [Feature List](FeatureList.md)
 
-Link to Trello Board is [here](https://trello.com/b/OFoVrFCD/sams-games-week-project).
+## [User Stories](UserStories.md)
+
+## [Trello](https://trello.com/b/OFoVrFCD/sams-games-week-project)
+
+## Screenshots
+
+   <img src= "https://github.com/SamRibes/Games-Week-Project/blob/master/Screenshots/ZombieTypes.png" width= "2000">
+   
+   - Green Enemy: Regular Zombie
+   - Red Enemy: Strong/Slow Zombie
+   - Blue Enemy: Weak/Fast Zombie
+   - Yellow Enemy: Ranged Zombie
+        - Yellow Bullet: Ranged Zombie's bullet
+  
+  <img src="https://github.com/SamRibes/Games-Week-Project/blob/master/Screenshots/TripleShot.png" width=2000>
+  - Triple shot power up in action
+  
+  <img src="https://github.com/SamRibes/Games-Week-Project/blob/master/Screenshots/FireRateUp.png" width=2000>
+  - Fire Rate power up in action
+        
