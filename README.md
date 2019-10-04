@@ -10,7 +10,7 @@
 
 ## Screenshots
 
- - Green Enemy: Regular Zombie
+   - Green Enemy: Regular Zombie
    - Red Enemy: Strong/Slow Zombie
    - Blue Enemy: Weak/Fast Zombie
    - Yellow Enemy: Ranged Zombie
