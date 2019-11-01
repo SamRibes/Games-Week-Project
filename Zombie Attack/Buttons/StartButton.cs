@@ -7,14 +7,14 @@ namespace Zombie_Attack
     {
         public StartButton(Texture2D buttonTexture)
         {
-            texture = buttonTexture;
+            Texture = buttonTexture;
         }
 
         public override void Update()
         {
             if (ButtonRectangle.Contains(Input.MousePosition.ToPoint()) && Input.WasLeftMouseClicked())
             {
-                ZombieGame._state = ZombieGame.GameState.MainGame;
+                ZombieGame.State = ZombieGame.GameState.MainGame;
             }
         }
     }

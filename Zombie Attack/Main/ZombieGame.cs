@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
 
 namespace Zombie_Attack
 {
@@ -12,7 +12,6 @@ namespace Zombie_Attack
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        List<Button> menuList = new List<Button>();
         public static bool SetQuit = false;
 
         #region Texture Objects
@@ -36,36 +35,15 @@ namespace Zombie_Attack
 
         public static ZombieGame Instance { get; private set; }
 
-        public static Viewport Viewport
-        {
-            get
-            {
-                return Instance.GraphicsDevice.Viewport;
-            }
-        }
-        public static Vector2 ScreenSize
-        {
-            get
-            {
-                return new Vector2(Viewport.Width, Viewport.Height);
-            }
-        }
-        public static Vector2 TopLeftOfScreen
-        {
-            get
-            {
-                return new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40);
-            }
-        }
-        public static Vector2 CenterOfScreen
-        {
-            get
-            {
-                return new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
-            }
-        }
+        public static Viewport Viewport => Instance.GraphicsDevice.Viewport;
 
-        public static GameState _state;
+        public static Vector2 ScreenSize => new Vector2(Viewport.Width, Viewport.Height);
+
+        public static Vector2 TopLeftOfScreen => new Vector2(ScreenSize.X / 40, ScreenSize.Y / 40);
+
+        public static Vector2 CenterOfScreen => new Vector2(ScreenSize.X / 2, ScreenSize.Y / 2);
+
+        public static GameState State;
         public enum GameState
         {
             MainMenu,
@@ -78,7 +56,7 @@ namespace Zombie_Attack
         public static int CurrentStage { get; set; }
         public static bool StageChange{ get; set; }
 
-        private int stageChangeCountDown = 0;
+        private int stageChangeCountDown;
 
         public ZombieGame()
         {
@@ -102,7 +80,7 @@ namespace Zombie_Attack
             ButtonManager.Add(new StartButton(StartButtonTexture));
             ButtonManager.Add(new ExitButton(ExitButtonTexture));
             IsMouseVisible = false;
-            _state = GameState.MainMenu;
+            State = GameState.MainMenu;
             EntityManager.Add(Player.Instance);
             LastGameTimeInSeconds = 0;
             CurrentStage = 1;
@@ -117,7 +95,6 @@ namespace Zombie_Attack
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             PlayerTexture = Content.Load<Texture2D>("Player/Player");
             //PlayerTexture = Content.Load<Texture2D>("Player/PlayerPlaceholder");
             BulletTexture = Content.Load<Texture2D>("Bullets/PlayerBullet");
@@ -146,7 +123,6 @@ namespace Zombie_Attack
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -165,7 +141,7 @@ namespace Zombie_Attack
             if (Input.WasKeyPressed(Keys.T))
                 CurrentStage++;
 
-            switch (_state)
+            switch (State)
             {
                 case GameState.MainMenu:
                     Input.Update();
@@ -176,7 +152,7 @@ namespace Zombie_Attack
                     EntityManager.Update();
                     EnemySpawner.Update();
 
-                    if (StageChange == true)
+                    if (StageChange)
                     {
                         stageChangeCountDown = 120;
                         CurrentStage++;
@@ -198,6 +174,8 @@ namespace Zombie_Attack
                     Input.Update();
                     ButtonManager.Update();
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
             if (SetQuit)
             {
@@ -214,9 +192,9 @@ namespace Zombie_Attack
         {
             GraphicsDevice.Clear(Color.White);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred);
+            spriteBatch.Begin();
 
-            switch (_state)
+            switch (State)
             {
                 case GameState.MainMenu:
                     ButtonManager.Draw(spriteBatch);
@@ -243,11 +221,9 @@ namespace Zombie_Attack
                 case GameState.GameComplete:
                     break;
                 case GameState.GameOver:
-                    spriteBatch.DrawString(BigFont, $"GAME OVER.", new Vector2(ScreenSize.X / 9, ScreenSize.Y / 3), Color.Black);
+                    spriteBatch.DrawString(BigFont, "GAME OVER.", new Vector2(ScreenSize.X / 9, ScreenSize.Y / 3), Color.Black);
                     spriteBatch.DrawString(BigFont, $"You got to round {CurrentStage}.", new Vector2(ScreenSize.X / 9, ScreenSize.Y / 2), Color.Black);
                     ButtonManager.Draw(spriteBatch);
-                    break;
-                default:
                     break;
             }
 

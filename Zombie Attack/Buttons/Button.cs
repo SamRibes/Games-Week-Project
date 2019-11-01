@@ -3,21 +3,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Zombie_Attack
 {
-    abstract class Button
+    internal abstract class Button
     {
-        private int x = (ZombieGame.Viewport.Width / 2) - (200 / 2),
-            width = 200;
-        protected Texture2D texture;
+        private int x = (ZombieGame.Viewport.Width / 2) - (200 / 2);
+
+        private const int Width = 200;
+        protected Texture2D Texture;
         public int Y = 0, Height = 100;
         public Rectangle ButtonRectangle;
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            ButtonRectangle = new Rectangle(x, Y, width, Height);
-            spriteBatch.Draw(texture, ButtonRectangle, Color.White);
+            ButtonRectangle = new Rectangle(x, Y, Width, Height);
+            spriteBatch.Draw(Texture, ButtonRectangle, Color.White);
         }
 
-        abstract public void Update();
+        public abstract void Update();
 
     }
 }

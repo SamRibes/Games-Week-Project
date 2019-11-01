@@ -7,7 +7,7 @@ namespace Zombie_Attack
     {
         public AddButton(Texture2D buttonTexture)
         {
-            texture = buttonTexture;
+            Texture = buttonTexture;
         }
 
         public override void Update()

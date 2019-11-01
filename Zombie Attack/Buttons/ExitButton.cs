@@ -6,7 +6,7 @@ namespace Zombie_Attack
     {
         public ExitButton(Texture2D buttonTexture)
         {
-            texture = buttonTexture;
+            Texture = buttonTexture;
         }
 
         public override void Update()

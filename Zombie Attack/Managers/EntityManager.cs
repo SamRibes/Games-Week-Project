@@ -25,21 +25,9 @@ namespace Zombie_Attack
         static List<Entity> addedEntities = new List<Entity>();
 
         //returns the number of entities
-        public static int Count
-        {
-            get
-            {
-                return entities.Count;
-            }
-        }
+        public static int Count => entities.Count;
 
-        public static int EnemyCount
-        {
-            get
-            {
-                return enemies.Count;
-            }
-        }
+        public static int EnemyCount => enemies.Count;
 
         //Used to add an entity to the entities List
         public static void Add(Entity entity)

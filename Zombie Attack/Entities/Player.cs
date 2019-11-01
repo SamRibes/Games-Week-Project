@@ -24,34 +24,13 @@ namespace Zombie_Attack
         private bool tripleShotActive = false;
         #endregion
 
-        public bool IsRespawning
-        {
-            get
-            {
-                return framesTillRespawn > 0;
-            }
-        }
-        public bool HasFireRateUp
-        {
-            get
-            {
-                return fireRateUpCoolDownLeft > 0;
-            }
-        }
-        public bool HasSpeedUp
-        {
-            get
-            {
-                return speedUpCoolDownLeft > 0;
-            }
-        }
-        public bool HasTripleShot
-        {
-            get
-            {
-                return tripleShotCoolDownLeft > 0;
-            }
-        }
+        public bool IsRespawning => framesTillRespawn > 0;
+
+        public bool HasFireRateUp => fireRateUpCoolDownLeft > 0;
+
+        public bool HasSpeedUp => speedUpCoolDownLeft > 0;
+
+        public bool HasTripleShot => tripleShotCoolDownLeft > 0;
 
         public int Score;
         float speed = 8;
@@ -177,7 +156,7 @@ namespace Zombie_Attack
                 ButtonManager.ClearButtons();
                 ButtonManager.Add(new StartButton(ZombieGame.StartButtonTexture));
                 ButtonManager.Add(new ExitButton(ZombieGame.ExitButtonTexture));
-                ZombieGame._state = ZombieGame.GameState.GameOver;
+                ZombieGame.State = ZombieGame.GameState.GameOver;
             }
             else
             {

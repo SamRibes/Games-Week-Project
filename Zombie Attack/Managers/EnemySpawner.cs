@@ -12,21 +12,10 @@ namespace Zombie_Attack
         private static int enemiesForRound = 0;
         private static int spawnDelay = 6;
         private static int zombiesToSpawn = 2;
-        public static int EnemiesLeft
-        {
-            get
-            {
-                return (ZombieGame.CurrentStage * zombiesToSpawn) - enemiesForRound;
-            }
-        }
-        public static int NextWaveIn
-        {
-            get
-            {
-                return ZombieGame.GameTimeInSeconds % spawnDelay;
-            }
-        }
-        public static int SpawnDelay { set { spawnDelay = 6; } }
+        public static int EnemiesLeft => (ZombieGame.CurrentStage * zombiesToSpawn) - enemiesForRound;
+
+        public static int NextWaveIn => ZombieGame.GameTimeInSeconds % spawnDelay;
+        public static int SpawnDelay { set => spawnDelay = 6; }
 
         public static void Update()
         {
